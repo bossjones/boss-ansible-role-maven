@@ -91,6 +91,7 @@ destroy:
 
 dependency:
 	molecule dependency
+	tree molecule/default/.molecule/
 
 install-cidr-brew:
 	pip install cidr-brewer
