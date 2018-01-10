@@ -89,6 +89,9 @@ download-roles:
 destroy:
 	molecule destroy
 
+dependency:
+	molecule dependency
+
 install-cidr-brew:
 	pip install cidr-brewer
 
@@ -111,6 +114,7 @@ travis-osx:
 	$(MAKE) venv-osx
 	$(MAKE) upgrade-setuptools
 	$(MAKE) venv-osx
+	$(MAKE) dependency
 	$(MAKE) ci
 
 # OSX Order of operations, make travis-osx; . venv/bin/activate; make upgrade-setuptools; make travis-osx;
