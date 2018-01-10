@@ -1,2 +1,4 @@
 ---
 # tasks file for bossjones.maven
+- name: install maven
+  include: install-maven.yml

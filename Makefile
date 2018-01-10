@@ -86,6 +86,13 @@ serverspec-install:
 download-roles:
 	ansible-galaxy install -r install_roles.txt --roles-path roles/ -vvv
 
+destroy:
+	molecule destroy
+
+dependency:
+	molecule dependency
+	tree molecule/default/.molecule/
+
 install-cidr-brew:
 	pip install cidr-brewer
 
@@ -102,9 +109,17 @@ test:
 
 bootstrap: venv
 
-travis: bootstrap venv ci
+travis:
+	$(MAKE) venv
+	$(MAKE) dependency
+	$(MAKE) ci
 
-travis-osx: venv-osx ci
+travis-osx:
+	$(MAKE) venv-osx
+	$(MAKE) upgrade-setuptools
+	$(MAKE) venv-osx
+	$(MAKE) dependency
+	$(MAKE) ci
 
 # OSX Order of operations, make travis-osx; . venv/bin/activate; make upgrade-setuptools; make travis-osx;
 
@@ -173,3 +188,30 @@ ping:
 # EXAMPLE: ansible-playbook -i inventory —private-key=~/.vagrant.d/insecure_private_key -u vagrant playbook.yml —tags=”phpconf”
 run-playbook:
 	echo "running playbook"
+
+clean-molecule:
+	rm -rfv molecule/gilt
+	rm -rfv molecule/default/.molecule
+
+clean-build: ## remove build artifacts
+	rm -fr build/
+	rm -fr dist/
+	rm -fr .eggs/
+	find . -name '*.egg-info' -exec rm -fr {} +
+	find . -name '*.egg' -exec rm -f {} +
+
+clean-pyc: ## remove Python file artifacts
+	find . -name '*.pyc' -exec rm -f {} +
+	find . -name '*.pyo' -exec rm -f {} +
+	find . -name '*~' -exec rm -f {} +
+	find . -name '__pycache__' -exec rm -fr {} +
+
+clean-test: ## remove test and coverage artifacts
+	rm -fr .tox/
+	rm -f .coverage
+	rm -fr htmlcov/
+
+clean-venv:
+	rm -rf venv/
+
+clean: clean-molecule clean-build clean-pyc clean-test clean-venv

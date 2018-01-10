@@ -1,0 +1,28 @@
+---
+# task install-maven for bossjones.maven
+# source: https://github.com/tecris/ansible-maven
+
+
+- name: Unarchive maven
+  unarchive:
+    src: "http://www.apache.org/dist/maven/maven-{{ boss__maven_major }}/{{ boss__maven_version }}/binaries/apache-maven-{{ boss__maven_version }}-bin.tar.gz"
+    dest: "{{ boss__maven_home_parent_directory }}"
+    copy: no
+    creates: "{{ boss__maven_home_parent_directory }}/apache-maven-{{ boss__maven_version }}"
+
+- name: Configure maven
+  lineinfile:
+    dest: /etc/profile.d/maven.sh
+    line: "{{ item.line }}"
+    create: yes
+    state: present
+  with_items:
+    - { line: 'M2_HOME={{boss__maven_home_parent_directory}}/apache-maven-{{boss__maven_version}}' }
+    - { line: 'PATH=$PATH:$M2_HOME/bin' }
+
+- name: Set permission for profile.d/maven.sh
+  file:
+    path: /etc/profile.d/maven.sh
+    mode: 0770
+    owner: "{{boss__maven_su_owner}}"
+    group: "{{boss__maven_su_group}}"

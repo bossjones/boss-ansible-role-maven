@@ -1,0 +1,7 @@
+---
+# - name: timezone
+#   src: yatesr.timezone
+
+- name: boss-ansible-role-java
+  src: https://github.com/bossjones/boss-ansible-role-java
+  version: master
