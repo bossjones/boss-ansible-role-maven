@@ -1,0 +1,4 @@
+---
+- git: https://github.com/bossjones/boss-ansible-role-java.git
+  version: master
+  dst: molecule/gilt/.molecule/roles/boss-ansible-role-java/

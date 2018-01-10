@@ -1,2 +1,8 @@
 ---
 # defaults file for bossjones.maven
+boss__maven_major: 3
+boss__maven_version: 3.3.9
+boss__maven_home_parent_directory: /opt
+boss__maven_su_owner: root
+boss__maven_su_group: root
+
